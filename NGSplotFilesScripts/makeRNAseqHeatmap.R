@@ -1,0 +1,35 @@
+library(pheatmap)
+
+args <- commandArgs()
+infile <-sub('--infile=', '',args[grep('--infile=',args)])
+outfile1 <-sub('--outfile1=', '',args[grep('--outfile1=',args)])
+outfile2 <-sub('--outfile2=', '',args[grep('--outfile2=',args)])
+outfile3 <-sub('--outfile3=', '',args[grep('--outfile3=',args)])
+print(infile)
+x <- read.table(infile,sep="\t",header=T,row.names=1)
+x <- x[2:ncol(x)]
+
+bk2 = unique(c(seq(-15,-1, length=1401),seq(-0.99, 0, length=100), seq(0.01,1, length=100), seq(1.01,15,length=1400)))
+col1 = colorRampPalette("blue")(1401)
+col2 = colorRampPalette(c("blue", 'white'))(100)
+col3 = colorRampPalette(c("white", 'red'))(100)
+col4 = colorRampPalette("red")(1400)
+colors2 <- c(col1,col2,col3,col4)
+pheatmap(x, cluster_rows = F, cluster_cols = F, show_rownames=FALSE, show_colnames=TRUE, color = colors2, breaks=bk2, cellwidth = 50, fontsize = 8, cellheight = 0.02, filename = outfile1)
+
+bk2 = unique(c(seq(-15,-1.5, length=1351),seq(-1.49, 0, length=150), seq(0.01,1.50, length=150), seq(1.51,15,length=1350)))
+col1 = colorRampPalette("blue")(1351)
+col2 = colorRampPalette(c("blue", 'white'))(150)
+col3 = colorRampPalette(c('white', 'red'))(150)
+col4 = colorRampPalette("red")(1350)
+colors2 <- c(col1,col2,col3,col4)
+pheatmap(x, cluster_rows = F, cluster_cols = F, show_rownames=FALSE, show_colnames=TRUE, color = colors2, breaks=bk2, cellwidth = 50, fontsize = 8, cellheight = 0.02, filename = outfile2)
+
+bk2 = unique(c(seq(-15,-2, length=1301),seq(-1.99, 0, length=200), seq(0.01,2, length=200), seq(2.01,15,length=1300)))
+col1 = colorRampPalette("blue")(1301)
+col2 = colorRampPalette(c("blue", 'white'))(200)
+col3 = colorRampPalette(c("white", 'red'))(200)
+col4 = colorRampPalette("red")(1300)
+colors2 <- c(col1,col2,col3,col4)
+pheatmap(x, cluster_rows = F, cluster_cols = F, show_rownames=FALSE, show_colnames=TRUE, color = colors2, breaks=bk2, cellwidth = 50, fontsize = 8, cellheight = 0.02, filename = outfile3)
+
