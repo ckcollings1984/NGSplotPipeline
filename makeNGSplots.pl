@@ -134,6 +134,23 @@ GetOptions('outputDirectory|o=s' => \$outputDirectory,
            'edgeRpv|erp=f' => \$edgeRpv
     ) ;
 $numBedProcessors = $numProcessors;
+
+open(OUT, ">$outputShell");
+print OUT "#!/bin/bash\n";
+print OUT "#SBATCH -t 0-12:00\n";
+print OUT "#SBATCH -N 1\n";                         
+print OUT "#SBATCH -c $numProcessors\n";
+print OUT "#SBATCH -p short\n";
+my $ram = $numProcessors * 8 * 1000;                  
+print OUT "#SBATCH --mem=$ram\n";
+print OUT "#SBATCH -o cc463_%j.out\n";        
+print OUT "#SBATCH -e cc463_%j.err\n";
+print OUT "#SBATCH --mail-type=ALL\n";
+print OUT "#SBATCH --mail-user=ccolling\@broadinstitute.org\n";
+print OUT "module load gcc/6.2.0\n";
+print OUT "module load R/3.2.5\n";
+
+
 # Define references.
 my %geneAnno;
 $geneAnno{"hg19"} = "$ngsPlotFilesScriptsDirectory\/hg19.ensembl.genebody.protein_coding.txt";
@@ -265,20 +282,6 @@ if ($comparisons eq '') {
 my $ngsPlotDirectory = $outputDirectory . "/NGSplot";
 my $mkdir_ngsplot_cmd = "mkdir $ngsPlotDirectory";
 system($mkdir_ngsplot_cmd);
-open(OUT, ">$outputShell");
-print OUT "#!/bin/bash\n";
-print OUT "#SBATCH -t 0-12:00\n";
-print OUT "#SBATCH -N 1\n";                         
-print OUT "#SBATCH -c $numProcessors\n";
-print OUT "#SBATCH -p short\n";
-my $ram = $numProcessors * 8 * 1000;                  
-print OUT "#SBATCH --mem=$ram\n";
-print OUT "#SBATCH -o cc463_%j.out\n";        
-print OUT "#SBATCH -e cc463_%j.err\n";
-print OUT "#SBATCH --mail-type=ALL\n";
-print OUT "#SBATCH --mail-user=ccolling\@broadinstitute.org\n";
-print OUT "module load gcc/6.2.0\n";
-print OUT "module load R/3.2.5\n";
 my %ngsplotcompcmd;
 my %ngsplotcmd;
 my @hs;
@@ -303,13 +306,13 @@ unless ($bedList eq '') {
 		my $bedname = $bedNames[$count];
 		if ($useEqualPeakWidthforBedList == 1 && $sortBed == 0) {
 			print OUT "perl $ngsPlotFilesScriptsDirectory\/convertToNGSplotBED.pl $bed $ngsPlotDirectory\/$bedname.same.bed\n";
-        } elsif ($useEqualPeakWidthforBedList == 1 && $sortBed == 1) {
-            print OUT "perl $ngsPlotFilesScriptsDirectory\/convertToNGSplotSortedBED.pl $bed $ngsPlotDirectory\/$bedname.sort.bed\n";
-        } elsif ($useEqualPeakWidthforBedList == 0 && $sortBed == 1 && $centerBed == 1)  {
-            print OUT "perl $ngsPlotFilesScriptsDirectory\/convertToNGSplotSortedCenteredBED.pl $bed $ngsPlotDirectory\/$bedname.sort.center.bed\n";
-        } else {
-        	print OUT "perl $ngsPlotFilesScriptsDirectory\/convertToNGSplotCenteredBED.pl $bed $ngsPlotDirectory\/$bedname.center.bed\n";
-        }
+        	} elsif ($useEqualPeakWidthforBedList == 1 && $sortBed == 1) {
+            		print OUT "perl $ngsPlotFilesScriptsDirectory\/convertToNGSplotSortedBED.pl $bed $ngsPlotDirectory\/$bedname.sort.bed\n";
+        	} elsif ($useEqualPeakWidthforBedList == 0 && $sortBed == 1 && $centerBed == 1)  {
+            		print OUT "perl $ngsPlotFilesScriptsDirectory\/convertToNGSplotSortedCenteredBED.pl $bed $ngsPlotDirectory\/$bedname.sort.center.bed\n";
+        	} else {
+        		print OUT "perl $ngsPlotFilesScriptsDirectory\/convertToNGSplotCenteredBED.pl $bed $ngsPlotDirectory\/$bedname.center.bed\n";
+        	}
 		my $outfile = $ngsPlotDirectory . "/configuration.$bedname.txt";
 		open(CNFG, ">$outfile");
 		my $count2 = -1;
