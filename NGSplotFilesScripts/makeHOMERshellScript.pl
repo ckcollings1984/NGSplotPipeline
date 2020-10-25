@@ -1,8 +1,8 @@
 $homerShellScript = $ARGV[1];
 open(OUT, ">$homerShellScript");
 $assembly = $ARGV[2];
-$promoters = $ARGV[3];
-$cgis = $ARGV[4];
+#$promoters = $ARGV[3];
+#$cgis = $ARGV[4];
 opendir(DIR, $ARGV[0]);
 @files = grep /bed/, readdir DIR;
 close DIR;
@@ -35,22 +35,22 @@ foreach $file (@files) {
 	print OUT "# $filename\n";
 	$annofile = $annoDir . "/" . $filename . ".anno.txt";
 	$annostatsfile = $annoDir . "/" . $filename . ".annoStats.txt";
-	unless ($cgis eq '') {
-		$cgiDir = $motifDir . "/" . $filename. ".cgi.bg.1000";
-		print OUT "mkdir $cgiDir\n";
-	}
-	$promoterDir = $motifDir . "/" . $filename. ".promoter.bg.1000";
+	#unless ($cgis eq '') {
+	#	$cgiDir = $motifDir . "/" . $filename. ".cgi.bg.1000";
+	#	print OUT "mkdir $cgiDir\n";
+	#}
+	#$promoterDir = $motifDir . "/" . $filename. ".promoter.bg.1000";
 	$genomeDir = $motifDir . "/" . $filename. ".genome.bg.1000";
 	$genomeOntologyDir = $annoDir . "/" . $filename . ".genomeOntology";
 	$geneOntologyDir = $annoDir . "/" . $filename . ".geneOntology";
-	print OUT "mkdir $promoterDir\n";
+	#print OUT "mkdir $promoterDir\n";
 	print OUT "mkdir $genomeDir\n";
 	print OUT "mkdir $genomeOntologyDir\n";
 	print OUT "mkdir $geneOntologyDir\n";
 	print OUT "annotatePeaks.pl $ARGV[0]\/$file $assembly -annStats $annostatsfile -go $geneOntologyDir -genomeOntology $genomeOntologyDir > $annofile\n";
 	print OUT "findMotifsGenome.pl $ARGV[0]\/$file $assembly $genomeDir -size 1000 -preparsedDir /n/data1/dfci/pedonc/kadoch/cc463/homer/\n"; 
-	print OUT "findMotifsGenome.pl $ARGV[0]\/$file $assembly $promoterDir -bg $promoters -size 1000 -preparsedDir /n/data1/dfci/pedonc/kadoch/cc463/homer/\n";
-	unless ($cgis eq '') {
-		print OUT "findMotifsGenome.pl $ARGV[0]\/$file $assembly $cgiDir -bg $cgis -size 1000 -preparsedDir /n/data1/dfci/pedonc/kadoch/cc463/homer/\n";
-	} 
+	#print OUT "findMotifsGenome.pl $ARGV[0]\/$file $assembly $promoterDir -bg $promoters -size 1000 -preparsedDir /n/data1/dfci/pedonc/kadoch/cc463/homer/\n";
+	#unless ($cgis eq '') {
+	#	print OUT "findMotifsGenome.pl $ARGV[0]\/$file $assembly $cgiDir -bg $cgis -size 1000 -preparsedDir /n/data1/dfci/pedonc/kadoch/cc463/homer/\n";
+	#} 
 }
