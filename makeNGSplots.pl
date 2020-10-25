@@ -1146,9 +1146,11 @@ unless ($comparisons eq '') {
 	}
 }
 if ($assembly eq 'mm9' || $assembly eq 'mm10' || $assembly eq 'hg18' || $assembly eq 'hg19') {
-	print OUT "perl $ngsPlotFilesScriptsDirectory\/makeHOMERshellScript.pl $ngsPlotDirectory\/ $homerShellScript $assembly $promoter1k{$assembly} $cgi{$assembly}\n";
+	#print OUT "perl $ngsPlotFilesScriptsDirectory\/makeHOMERshellScript.pl $ngsPlotDirectory\/ $homerShellScript $assembly $promoter1k{$assembly} $cgi{$assembly}\n";
+	print OUT "perl $ngsPlotFilesScriptsDirectory\/makeHOMERshellScript.pl $ngsPlotDirectory\/ $homerShellScript $assembly\n";
 } else {
-	print OUT "perl $ngsPlotFilesScriptsDirectory\/makeHOMERshellScript.pl $ngsPlotDirectory\/ $homerShellScript $assembly $promoter1k{$assembly}\n";
+	#print OUT "perl $ngsPlotFilesScriptsDirectory\/makeHOMERshellScript.pl $ngsPlotDirectory\/ $homerShellScript $assembly $promoter1k{$assembly}\n";
+	print OUT "perl $ngsPlotFilesScriptsDirectory\/makeHOMERshellScript.pl $ngsPlotDirectory\/ $homerShellScript $assembly\n";
 }
 print OUT "perl $ngsPlotFilesScriptsDirectory\/makeHOMERshellScript2.pl $ngsPlotDirectory\/ $homerShellScript2 $assembly\n";
 close(OUT);
